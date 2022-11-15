@@ -1,0 +1,66 @@
+stat_recebido = ("01|15|59, 01|47|06, 01|17|20, 01|32|34, 02|03|17")
+
+
+def stat_for_AA(stat_recebido):
+  import numpy as np
+  stat_caracter = "|, "  #Defining the characters to be excluded
+  for letra in stat_caracter:  #excluding the characters "," and "|"
+   if letra in stat_recebido:    
+      stat_recebido = stat_recebido.replace(letra,'')
+
+  #Slicing the stat_received data and allocating them in my stat_tratado array
+
+  stat_tratado = [[stat_recebido[:2],stat_recebido[2:4],stat_recebido[4:6]],[stat_recebido[6:8],stat_recebido[8:10],stat_recebido[10:12]],[stat_recebido[12:14],stat_recebido[14:16],stat_recebido[16:18]],[stat_recebido[18:20],stat_recebido[20:22],stat_recebido[22:24]],[stat_recebido[24:26],stat_recebido[26:28],stat_recebido[28:30]]]
+
+  stat_tratado_np = np.asarray(stat_tratado) #Creating a numpy array with the data from stat_tretado
+
+  stat_tratado_int = stat_tratado_np.astype('int') #changing the type off data in the array, string -> int 
+
+  array_aux = 0
+
+  range = np.array(2)
+  average = np.array(2)
+  median = np.array(2)
+
+  if np.all(stat_tratado_int[0:5,0:1] != 0):
+    stat_tratado_int[0:5,0] = stat_tratado_int[0:5,0] * 3600
+    stat_tratado_int[0:5,1] = stat_tratado_int[0:5,1] * 60
+    #np.sum(stat_tratado_int[:],axis = 1)
+
+  else:
+    print("Impossible to multiply a number for 0")
+
+  #The idea here is use the array "array_aux" to make all the math work, and after that we will use the others array's like "range", "average" and "median" to allocate the results that are included in their names rs. But, before we said that the work is done, we will need to make the reverse effort aplied before. We will need to divide the seconds for 3600 and take the "rest"(%) and divide again but for 60 and then name the "rest" of seconds. Understood?
+
+  array_aux = np.asarray(stat_tratado_int)
+
+  array_aux[0,0:3] = stat_tratado_int[0,0] + stat_tratado_int[0,1] + stat_tratado_int[0,2]
+  array_aux[1,0:3] = stat_tratado_int[1,0] + stat_tratado_int[1,1] + stat_tratado_int[1,2]
+  array_aux[2,0:3] = stat_tratado_int[2,0] + stat_tratado_int[2,1] + stat_tratado_int[2,2]
+  array_aux[3,0:3] = stat_tratado_int[3,0] + stat_tratado_int[3,1] + stat_tratado_int[3,2]
+  array_aux[4,0:3] = stat_tratado_int[4,0] + stat_tratado_int[4,1] + stat_tratado_int[4,2]
+  #array_aux[0:5,1:3] = 0
+  array_aux[0:5,0:2].sort()
+
+  range = np.ptp(array_aux[0:5,0],axis=0)
+  average = np.mean(array_aux[0:5,1],axis=0)
+  median = np.median(array_aux[0:5,2],axis=0)
+
+  resultado = np.array([[0,0,0],
+              [0,0,0],
+              [0,0,0]])
+
+
+  if range and average and median != 0:
+    resultado[0,0] = range//3600
+    resultado[0,1] = range%3600 / 60
+    resultado[0,2] = range%60
+    resultado[1,0] = average//3600
+    resultado[1,1] = average%3600 / 60
+    resultado[1,2] = average%60
+    resultado[2,0] = median//3600
+    resultado[2,1] = median%3600 / 60
+    resultado[2,2] = median%60
+
+
+  return print(f"Range:{resultado[0,0]}0|{resultado[0,1]}|{resultado[0,2]} Average:{resultado[1,0]}0|{resultado[1,1]}|{resultado[1,2]} Median:{resultado[2,0]}0|{resultado[2,1]}|{resultado[2,2]}")
