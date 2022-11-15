@@ -1,5 +1,7 @@
 # Python_Solution---Statistics_for_an_Athletic_Association
 
+CODEWARS KATA: https://www.codewars.com/kata/55b3425df71c1201a800009c/python
+
 *The problem to be solved*: 
 
 You are the "computer expert" of a local Athletic Association (C.A.A.). Many teams of runners come to compete. Each time you get a string of all race results of every team who has run. For example here is a string showing the individual results of a team of 5 runners:
